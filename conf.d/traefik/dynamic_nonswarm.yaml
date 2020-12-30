@@ -1,0 +1,17 @@
+# Dynamic configuration
+
+tls:
+  stores:
+    default: {}
+  certificates:
+    - certFile: /acme/secret.crt
+      keyFile: /acme/secret.key
+      stores:
+        - default
+
+http:
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true

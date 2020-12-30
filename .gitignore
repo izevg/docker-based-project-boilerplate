@@ -1,0 +1,7 @@
+vault
+.env
+
+secrets.d/cert.d/dec.d
+!secrets.d/cert.d/dec.d/.gitkeep
+
+.idea

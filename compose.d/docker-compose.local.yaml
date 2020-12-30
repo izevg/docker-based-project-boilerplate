@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  traefik:
+    volumes:
+      - "./conf.d/traefik/static_nonswarm.yaml:/etc/traefik/traefik.yaml:ro"
+      - "./conf.d/traefik/dynamic_nonswarm.yaml:/etc/traefik/dynamic.yaml:ro"
+      - "./secrets.d/cert.d/dec.d/traefik/:/acme/"
+    labels:
+      - "traefik.http.routers.api.rule=Host(`${DOMAIN__TRAEFIK}`)"
+      - "traefik.http.routers.api.service=api@internal"

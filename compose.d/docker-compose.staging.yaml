@@ -1,0 +1,41 @@
+version: "3.8"
+
+configs:
+  traefik_dynamic:
+    file: "./conf.d/traefik/dynamic_swarm.yaml"
+  traefik_static:
+    file: "./conf.d/traefik/static_swarm.yaml"
+
+secrets:
+  traefik_acme_crt:
+    file: "./secrets.d/cert.d/dec.d/traefik/secret.crt"
+  traefik_acme_key:
+    file: "./secrets.d/cert.d/dec.d/traefik/secret.key"
+
+networks:
+  internal:
+    name: "${COMPOSE_PROJECT_NAME}__${DOCKER__ENV}__overlay_network"
+    external: true
+
+services:
+  traefik:
+    configs:
+      - source: traefik_static
+        target: "/etc/traefik/traefik.yaml"
+      - source: traefik_dynamic
+        target: "/etc/traefik/dynamic.yaml"
+    secrets:
+      - traefik_acme_crt
+      - traefik_acme_key
+    deploy:
+      mode: "global"
+      placement:
+        constraints:
+          - node.role == manager
+      update_config:
+        parallelism: 1
+        delay: 10s
+      labels:
+        - "traefik.http.routers.api.rule=Host(`${DOMAIN__TRAEFIK}`)"
+        - "traefik.http.routers.api.service=api@internal"
+        - "traefik.http.services.api.loadbalancer.server.port=${PORT__TRAEFIK}"

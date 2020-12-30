@@ -1,0 +1,26 @@
+version: "3.8"
+
+###> Here are your *common* networks.
+###  Keep in mind that you should describe environment-specific
+###  networks in `docker-compose.$ENV.yaml` files, not here.
+networks:
+  internal:
+    name: "${COMPOSE_PROJECT_NAME}__${DOCKER__ENV}__internal_network"
+
+###> Here are your *base* services, which will apply
+###  to *any* of your environment.
+###
+###> Env-specific services and settings should be
+###  described in `docker-compose.$ENV.yaml` files.
+services:
+  ###> Traefik as an example of the service description
+  traefik:
+    image: "traefik:latest"
+    ###> Keep the end of container's name in consistence with a service's name
+    container_name: "${COMPOSE_PROJECT_NAME}__${DOCKER__ENV}__traefik"
+    networks:
+      - internal
+    ###> Use env variables where it's possible - keep your environment flexible
+    ports:
+      - "${PORT__HTTP}:80"
+      - "${PORT__HTTPS}:443"

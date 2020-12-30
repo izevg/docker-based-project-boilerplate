@@ -1,0 +1,6 @@
+###> Fill this file with actual files and directories
+###  which should be ignored during the image build.
+###
+###> Example: some Node/JS app:
+###  **/dist
+###  **/node_modules

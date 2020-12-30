@@ -1,0 +1,20 @@
+# Static configuration
+
+api:
+  dashboard: true
+
+accessLog: {}
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: "internal"
+  file:
+    filename: "/etc/traefik/dynamic.yaml"
