@@ -21,3 +21,6 @@ include ./mk.d/logs.mk
 include ./mk.d/operations.mk
 include ./mk.d/registry.mk
 include ./mk.d/secrets.mk
+
+###> Optional and probably could be removed in case of using any other orchestrator
+include ./mk.d/swarm.mk.mk

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Self-signed certificates generating script.
+# Heavily depends on the project structure.
+# Author: Eugene Zhukov <jack.zhukov@gmail.com>
+
+# Get the service name for generating the certs pair
 intro() {
   local serviceName
 
@@ -13,6 +18,7 @@ intro() {
   fi
 }
 
+# Get the domains to capture
 readDomains() {
   echo -e "${COLOR__YELLOW} Please, specify the primary domain name (2nd-level, should be consistent with a one specified in .env-file): ${COLOR__DEFAULT}"
   read -r -p "Primary domain name: " primaryDomain
@@ -28,6 +34,7 @@ readDomains() {
   done
 }
 
+# Generate certs
 generateCerts() {
   echo -e "${COLOR__GREEN} Generating certificates... ${COLOR__DEFAULT}"
   local subject="/C=US/ST=NY/L=NewYork/O=Stub/OU=Stub/CN=$primaryDomain"
@@ -69,6 +76,7 @@ EOF
   echo -e "${COLOR__GREEN} Certificates have been generated successfully! ${COLOR__DEFAULT}"
 }
 
+# Do the cleanup after generating certs
 cleanup() {
   echo -e "${COLOR__YELLOW} Post-gen cleanup ${COLOR__DEFAULT}"
 
@@ -88,6 +96,7 @@ cleanup() {
   fi
 }
 
+# Combine all the steps above into flow
 main() {
   intro
   readDomains
@@ -95,4 +104,5 @@ main() {
   cleanup
 }
 
+# Run the flow
 main

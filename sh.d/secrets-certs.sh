@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
+# Certificates encrypting/decrypting based on the Ansible Vault.
+# Heavily depends on the project structure.
+# Author: Eugene Zhukov <jack.zhukov@gmail.com>
+
+# Get the service name for any further operation (encrypt/decrypt)
 intro () {
-  echo -e "${COLOR__YELLOW} Please, specify the service name for which you're want to encrypt a certificate ${COLOR__DEFAULT}"
+  echo -e "${COLOR__YELLOW} Please, specify the service name for further operations ${COLOR__DEFAULT}"
   read -r -p "Docker service name: " serviceName
 
   encryptedStorageDirectory="./secrets.d/cert.d/enc.d"
   decryptedStorageDirectory="./secrets.d/cert.d/dec.d"
 }
 
+# Select an appropriate operation to do with secrets
 selectOperation () {
   local operations=("encrypt" "decrypt")
 
@@ -30,6 +36,7 @@ selectOperation () {
   done
 }
 
+# Encrypt a secret
 encrypt () {
   local pathForEncrypt="${decryptedStorageDirectory}/${serviceName}"
   local certFileName
@@ -58,6 +65,7 @@ encrypt () {
   fi
 }
 
+# Decrypt a secret
 decrypt () {
   local certFileName
 
@@ -87,9 +95,11 @@ decrypt () {
   fi
 }
 
+# Combine intro step and secrets operations into flow
 main () {
   intro
   selectOperation
 }
 
+# Run the flow
 main
